@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -35,6 +33,34 @@ class _HomeState extends State<Home> {
         title: Text("\$ Conversosr \$"),
         backgroundColor: Colors.amber,
         centerTitle: true,
+      ),
+      body: FutureBuilder<Map>(
+        future: getData(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                child: Text(
+                  "Carregando dados...",
+                  style: TextStyle(color: Colors.amber, fontSize: 25.0),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            default:
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "Erro ao carregar Dados...",
+                    style: TextStyle(color: Colors.amber, fontSize: 25.0),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              } else {
+                return Container();
+              }
+          }
+        },
       ),
     );
   }
